@@ -10,6 +10,12 @@ import java.util.regex.Pattern;
 import lille1.car3.durieux_gouzer.config.RMIConfiguration;
 import lille1.car3.durieux_gouzer.rmi.Site;
 
+/**
+ * est la classe exécutable permettant de lancer l'annuaire de RMI
+ * 
+ * @author Thomas Durieux
+ * 
+ */
 public class Annuaire {
 	public static void main(final String[] args) {
 		int port;
@@ -32,7 +38,7 @@ public class Annuaire {
 		while ((line = s.nextLine()) != null) {
 			if (line.startsWith("help")) {
 				System.out
-						.println("Les commandes disponibles sont: help, quit et list");
+				.println("Les commandes disponibles sont: help, quit et list");
 			} else if (line.startsWith("quit")) {
 				s.close();
 				System.exit(0);

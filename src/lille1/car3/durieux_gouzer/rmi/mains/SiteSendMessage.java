@@ -10,8 +10,15 @@ import lille1.car3.durieux_gouzer.rmi.Message;
 import lille1.car3.durieux_gouzer.rmi.MessageImpl;
 import lille1.car3.durieux_gouzer.rmi.Site;
 
+/**
+ * est une classe exécutable qui permet de lancer des messages sur les
+ * différents sites
+ * 
+ * @author Thomas Durieux
+ * 
+ */
 public class SiteSendMessage {
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
 		String host;
 		int port;
@@ -19,36 +26,36 @@ public class SiteSendMessage {
 
 		try {
 			host = args[1];
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			host = RMIConfiguration.INSTANCE.getProperty("registryHost");
 		}
 
 		try {
 			port = Integer.parseInt(args[2]);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			port = RMIConfiguration.INSTANCE.getIntProperty("registryPort");
 		}
 
 		try {
 			registry = LocateRegistry.getRegistry(host, port);
-		} catch (RemoteException e1) {
+		} catch (final RemoteException e1) {
 			throw new RuntimeException("Impossible de trouver le registry", e1);
 		}
 
 		String line = "";
-		Scanner s = new Scanner(System.in);
+		final Scanner s = new Scanner(System.in);
 		while ((line = s.nextLine()) != null) {
 			if (line.equals("help")) {
 				System.out
-						.println("Les commandes disponibles sont: help, send ");
+				.println("Les commandes disponibles sont: help, send ");
 			} else if (line.startsWith("send")) {
-				String[] splittedLine = line.split(" ");
-				String siteName = splittedLine[1];
+				final String[] splittedLine = line.split(" ");
+				final String siteName = splittedLine[1];
 				try {
-					Site site = (Site) registry.lookup(siteName);
+					final Site site = (Site) registry.lookup(siteName);
 					sendMessage(site,
 							line.replaceAll("send " + siteName + " ", ""));
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					System.out.println("Site " + siteName + " non trouvé");
 				}
 			} else if (line.startsWith("list")) {
@@ -56,10 +63,10 @@ public class SiteSendMessage {
 					if (registry.list().length == 0) {
 						System.out.println("Annuaire vide");
 					}
-					for (String string : registry.list()) {
+					for (final String string : registry.list()) {
 						System.out.println(string);
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throw new RuntimeException(
 							"Impossible d'accéder à la liste", e);
 				}
@@ -70,11 +77,11 @@ public class SiteSendMessage {
 
 	}
 
-	private static void sendMessage(Site site, String message) {
-		Message m = new MessageImpl(message, site);
+	private static void sendMessage(final Site site, final String message) {
+		final Message m = new MessageImpl(message, site);
 		try {
 			site.transferMessage(m);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException("Impossible d'envoyer un message");
 		}
 	}

@@ -11,8 +11,14 @@ import lille1.car3.durieux_gouzer.rmi.MessageImpl;
 import lille1.car3.durieux_gouzer.rmi.Site;
 import lille1.car3.durieux_gouzer.rmi.SiteImpl;
 
+/**
+ * est une classe exécutatble permettant de créer un nouveau site
+ * 
+ * @author Thomas Durieux
+ * 
+ */
 public class Noeud {
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
 		String host;
 		int port;
@@ -22,46 +28,46 @@ public class Noeud {
 
 		try {
 			host = args[1];
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			host = RMIConfiguration.INSTANCE.getProperty("registryHost");
 		}
 
 		try {
 			port = Integer.parseInt(args[2]);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			port = RMIConfiguration.INSTANCE.getIntProperty("registryPort");
 		}
 
 		try {
 			registry = LocateRegistry.getRegistry(host, port);
-		} catch (RemoteException e1) {
+		} catch (final RemoteException e1) {
 			throw new RuntimeException("Impossible de trouver le registry", e1);
 		}
 
 		try {
 			siteName = args[0];
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			try {
 				siteName = "Site" + registry.list().length;
-			} catch (Exception e1) {
+			} catch (final Exception e1) {
 				siteName = "Site0";
 			}
 		}
-		
+
 		try {
 			site = new SiteImpl(siteName);
 
 			registry.rebind(site.getName(), site);
 			System.out.println("Site " + site.getName() + " créé.");
-		} catch (RemoteException e) {
+		} catch (final RemoteException e) {
 			throw new RuntimeException("Impossible de créer un nouveau site", e);
 		}
 		String line = "";
-		Scanner s = new Scanner(System.in);
+		final Scanner s = new Scanner(System.in);
 		while ((line = s.nextLine()) != null) {
 			if (line.equals("help")) {
 				System.out
-						.println("Les commandes disponibles sont: help, quit et list");
+				.println("Les commandes disponibles sont: help, quit et list");
 			} else if (line.startsWith("kill")) {
 				killSite(registry, site);
 				s.close();
@@ -73,10 +79,10 @@ public class Noeud {
 					if (registry.list().length == 0) {
 						System.out.println("Annuaire vide");
 					}
-					for (String string : registry.list()) {
+					for (final String string : registry.list()) {
 						System.out.println(string);
 					}
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throw new RuntimeException(
 							"Impossible d'accéder à la liste", e);
 				}
@@ -87,21 +93,21 @@ public class Noeud {
 
 	}
 
-	private static void killSite(Registry registry, Site site) {
+	private static void killSite(final Registry registry, final Site site) {
 		try {
 			registry.unbind(site.getName());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException("Impossible de tuer le site");
 		}
 	}
-	
-	private static void sendMessage(Site site, String message) {
-		Message m = new MessageImpl(message, site);
+
+	private static void sendMessage(final Site site, final String message) {
+		final Message m = new MessageImpl(message, site);
 		try {
 			site.transferMessage(m);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException("Impossible d'envoyer un message");
 		}
 	}
-	
+
 }

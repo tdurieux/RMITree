@@ -2,12 +2,18 @@ package lille1.car3.durieux_gouzer.rmi;
 
 import java.io.Serializable;
 
+/**
+ * est un message qui est à commiquer entre les différents sites
+ * 
+ * @author Thomas Durieux
+ * 
+ */
 public class MessageImpl implements Message, Serializable {
-	private String content;
-	private Site sender;
-	private float time = System.nanoTime();
-	
-	public MessageImpl(String content, Site sender) {
+	private final String content;
+	private final Site sender;
+	private final float time = System.nanoTime();
+
+	public MessageImpl(final String content, final Site sender) {
 		super();
 		this.content = content;
 		this.sender = sender;
@@ -18,7 +24,7 @@ public class MessageImpl implements Message, Serializable {
 	 */
 	@Override
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	/**
@@ -26,19 +32,19 @@ public class MessageImpl implements Message, Serializable {
 	 */
 	@Override
 	public Site getSender() {
-		return sender;
-	}	
-	
+		return this.sender;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Float.floatToIntBits(time);
+		result = prime * result + Float.floatToIntBits(this.time);
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -48,8 +54,8 @@ public class MessageImpl implements Message, Serializable {
 		if (!(obj instanceof MessageImpl)) {
 			return false;
 		}
-		MessageImpl other = (MessageImpl) obj;
-		if (Float.floatToIntBits(time) != Float.floatToIntBits(other.time)) {
+		final MessageImpl other = (MessageImpl) obj;
+		if (Float.floatToIntBits(this.time) != Float.floatToIntBits(other.time)) {
 			return false;
 		}
 		return true;

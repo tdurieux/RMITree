@@ -1,7 +1,7 @@
 package lille1.car3.durieux_gouzer.config;
 
 /**
- * Properties utility used to manage properties
+ * Properties utility used to manage ini properties
  * 
  * @author Durieux Thomas
  * @author Toulet Cyrille

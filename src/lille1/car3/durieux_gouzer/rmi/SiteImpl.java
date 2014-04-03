@@ -4,18 +4,17 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class SiteImpl extends UnicastRemoteObject implements Site, Serializable {
 
 	private static final long serialVersionUID = -4318509254473189526L;
 
-	private String name;
-	private List<Site> connections;
-	private List<Message> receivedMessages;
+	private final String name;
+	private final List<Site> connections;
+	private final List<Message> receivedMessages;
 
-	public SiteImpl(String name) throws RemoteException {
+	public SiteImpl(final String name) throws RemoteException {
 		this.name = name;
 		this.connections = new ArrayList<Site>();
 		this.receivedMessages = new ArrayList<Message>();
@@ -27,8 +26,8 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 	}
 
 	@Override
-	public void addConnection(Site connection) throws RemoteException {
-		if (!connections.contains(connection)) {
+	public void addConnection(final Site connection) throws RemoteException {
+		if (!this.connections.contains(connection)) {
 			this.connections.add(connection);
 			System.out.println("[" + this.name + "] connecté avec "
 					+ connection.getName());
@@ -36,20 +35,20 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 	}
 
 	@Override
-	public synchronized void transferMessage(Message message)
+	public synchronized void transferMessage(final Message message)
 			throws RemoteException {
 
 		// le message a déjà été transféré
-		if (receivedMessages.contains(message)) {
+		if (this.receivedMessages.contains(message)) {
 			return;
 		}
-		receivedMessages.add(message);
-		
+		this.receivedMessages.add(message);
+
 		System.out.println("[" + this.name + "] \"" + message.getContent()
 				+ "\" recieved message from " + message.getSender().getName());
 
 		// transmettre le message aux noeuds connectés
-		for (Site connecion : connections) {
+		for (final Site connecion : this.connections) {
 			// ne pas envoyer le message à l'émetteur
 			if (!connecion.equals(message.getSender())) {
 				connecion.transferMessage(message);
@@ -58,6 +57,11 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 			}
 		}
 
+	}
+
+	@Override
+	public List<Message> getReceivedMessages() throws RemoteException {
+		return this.receivedMessages;
 	}
 
 }

@@ -35,7 +35,7 @@ public class Annuaire {
 
 		String line = "";
 		final Scanner s = new Scanner(System.in);
-		while ((line = s.nextLine()) != null) {
+		while (s.hasNextLine() && (line = s.nextLine()) != null) {
 			if (line.startsWith("help")) {
 				System.out
 				.println("Les commandes disponibles sont: help, quit et list");
@@ -95,5 +95,16 @@ public class Annuaire {
 			}
 
 		}
+		// empecher le programme de s'arrêter
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.currentThread().sleep(99999999);
+				} catch (final InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}).start();
 	}
 }

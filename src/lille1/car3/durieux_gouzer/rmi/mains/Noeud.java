@@ -3,11 +3,8 @@ package lille1.car3.durieux_gouzer.rmi.mains;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
 
 import lille1.car3.durieux_gouzer.config.RMIConfiguration;
-import lille1.car3.durieux_gouzer.rmi.Message;
-import lille1.car3.durieux_gouzer.rmi.MessageImpl;
 import lille1.car3.durieux_gouzer.rmi.Site;
 import lille1.car3.durieux_gouzer.rmi.SiteImpl;
 
@@ -23,8 +20,8 @@ public class Noeud {
 		String host;
 		int port;
 		String siteName;
-		Registry registry;
-		Site site;
+		final Registry registry;
+		final Site site;
 
 		try {
 			host = args[1];
@@ -62,35 +59,25 @@ public class Noeud {
 		} catch (final RemoteException e) {
 			throw new RuntimeException("Impossible de créer un nouveau site", e);
 		}
-		String line = "";
-		final Scanner s = new Scanner(System.in);
-		while ((line = s.nextLine()) != null) {
-			if (line.equals("help")) {
-				System.out
-				.println("Les commandes disponibles sont: help, quit et list");
-			} else if (line.startsWith("kill")) {
-				killSite(registry, site);
-				s.close();
-				System.exit(0);
-			} else if (line.startsWith("send")) {
-				sendMessage(site, line.replaceAll("send ", ""));
-			} else if (line.startsWith("list")) {
-				try {
-					if (registry.list().length == 0) {
-						System.out.println("Annuaire vide");
-					}
-					for (final String string : registry.list()) {
-						System.out.println(string);
-					}
-				} catch (final Exception e) {
-					throw new RuntimeException(
-							"Impossible d'accéder à la liste", e);
-				}
-			} else {
-				System.out.println("Commande: " + line + " non trouvée.");
-			}
-		}
 
+		// tue proprement le noeud
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				killSite(registry, site);
+			}
+		});
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.currentThread().sleep(99999999);
+				} catch (final InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}).start();
 	}
 
 	private static void killSite(final Registry registry, final Site site) {
@@ -100,14 +87,4 @@ public class Noeud {
 			throw new RuntimeException("Impossible de tuer le site");
 		}
 	}
-
-	private static void sendMessage(final Site site, final String message) {
-		final Message m = new MessageImpl(message, site);
-		try {
-			site.transferMessage(m);
-		} catch (final Exception e) {
-			throw new RuntimeException("Impossible d'envoyer un message");
-		}
-	}
-
 }

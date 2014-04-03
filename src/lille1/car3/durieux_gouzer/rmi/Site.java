@@ -2,6 +2,7 @@ package lille1.car3.durieux_gouzer.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * est un noeud de l'arbre de communication
@@ -33,4 +34,10 @@ public interface Site extends Remote {
 	 */
 	void transferMessage(Message message) throws RemoteException;
 
+	/**
+	 * 
+	 * @return
+	 * @throws RemoteException
+	 */
+	List<Message> getReceivedMessages() throws RemoteException;
 }

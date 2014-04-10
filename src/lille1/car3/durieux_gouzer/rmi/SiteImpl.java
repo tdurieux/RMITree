@@ -51,9 +51,22 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 		for (final Site connecion : this.connections) {
 			// ne pas envoyer le message à l'émetteur
 			if (!connecion.equals(message.getSender())) {
-				connecion.transferMessage(message);
-				System.out.println("[" + this.name + "] transfer "
-						+ message.getContent() + " to " + connecion.getName());
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							connecion.transferMessage(message);
+							System.out.println("[" + SiteImpl.this.name
+									+ "] transfer " + message.getContent()
+									+ " to " + connecion.getName());
+						} catch (final RemoteException e) {
+							throw new RuntimeException(
+									"Unable to send message to site", e);
+						}
+					}
+				});
+
 			}
 		}
 

@@ -21,13 +21,17 @@ public class Annuaire {
 		int port;
 		Registry registry;
 		try {
-			port = Integer.parseInt(args[1]);
+			port = Integer.parseInt(args[2]);
 		} catch (final Exception e) {
 			// utiliser le port par défaut
 			port = RMIConfiguration.INSTANCE.getIntProperty("registryPort");
 		}
 		try {
-			registry = LocateRegistry.createRegistry(port);
+			if (args[1].equals("true")) {
+				registry = LocateRegistry.createRegistry(port);
+			} else {
+				registry = LocateRegistry.getRegistry(port);
+			}
 			System.out.println("L'annuaire a démarré sur le port " + port);
 		} catch (final RemoteException e) {
 			throw new RuntimeException("Impossible de démarrer l'annuaire", e);

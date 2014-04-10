@@ -45,7 +45,7 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 		this.receivedMessages.add(message);
 
 		System.out.println("[" + this.name + "] \"" + message.getContent()
-				+ "\" recieved message from " + message.getSender().getName());
+				+ "\" received message from " + message.getSender().getName());
 
 		// transmettre le message aux noeuds connectés
 		for (final Site connecion : this.connections) {
@@ -65,7 +65,7 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 									"Unable to send message to site", e);
 						}
 					}
-				});
+				}).run();
 
 			}
 		}

@@ -42,4 +42,4 @@ sleep 0.3
 # fg %1
 
 # kill everything related to java
-kill `ps -ef | grep "java" | awk '{print $2}'`
+kill `ps -ef | grep "java" | awk '{print $2}'` > /dev/null 2&>1

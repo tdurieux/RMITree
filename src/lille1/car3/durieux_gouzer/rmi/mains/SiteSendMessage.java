@@ -42,6 +42,9 @@ public class SiteSendMessage {
 			throw new RuntimeException("Impossible de trouver le registry", e1);
 		}
 
+		System.out
+				.println("ex: send \033[4msiteName\033[0m \033[4mmessage\033[0m");
+
 		String line = "";
 		final Scanner s = new Scanner(System.in);
 		while ((line = s.nextLine()) != null) {

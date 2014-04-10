@@ -3,6 +3,7 @@ package lille1.car3.durieux_gouzer.rmi.mains;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,12 +28,15 @@ public class Annuaire {
 			port = RMIConfiguration.INSTANCE.getIntProperty("registryPort");
 		}
 		try {
-			if (args[1].equals("true")) {
-				registry = LocateRegistry.createRegistry(port);
-			} else {
-				registry = LocateRegistry.getRegistry(port);
-			}
+			registry = LocateRegistry.createRegistry(port);
 			System.out.println("L'annuaire a démarré sur le port " + port);
+		} catch (final ExportException e) {
+			try {
+				registry = LocateRegistry.getRegistry(port);
+			} catch (final RemoteException e1) {
+				throw new RuntimeException("Impossible de démarrer l'annuaire",
+						e);
+			}
 		} catch (final RemoteException e) {
 			throw new RuntimeException("Impossible de démarrer l'annuaire", e);
 		}

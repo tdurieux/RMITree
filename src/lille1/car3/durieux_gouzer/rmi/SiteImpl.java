@@ -29,7 +29,7 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 	public void addConnection(final Site connection) throws RemoteException {
 		if (!this.connections.contains(connection)) {
 			this.connections.add(connection);
-			System.out.println("[" + this.name + "] connecté avec "
+			System.out.println("[" + this.name + "] connected with "
 					+ connection.getName());
 		}
 	}
@@ -44,8 +44,11 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 		}
 		this.receivedMessages.add(message);
 
-		System.out.println("[" + this.name + "] \"" + message.getContent()
-				+ "\" receives message from " + message.getSender().getName());
+		if (!message.getSender().getName().equals(this.name)) {
+			System.out.println("[" + this.name + "] \"" + message.getContent()
+					+ "\" receives message from "
+					+ message.getSender().getName());
+		}
 
 		// transmettre le message aux noeuds connectés
 		for (final Site connecion : this.connections) {
@@ -53,6 +56,7 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 			if (!connecion.equals(message.getSender())) {
 				new Thread(new Runnable() {
 					final Site c = connecion;
+
 					@Override
 					public void run() {
 						try {

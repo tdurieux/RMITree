@@ -3,7 +3,6 @@ package lille1.car3.durieux_gouzer.rmi.mains;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
 
 import lille1.car3.durieux_gouzer.config.RMIConfiguration;
 import lille1.car3.durieux_gouzer.rmi.Message;
@@ -23,15 +22,26 @@ public class SiteSendMessage {
 		String host;
 		int port;
 		Registry registry;
+		String siteName;
+		String message;
 
 		try {
-			host = args[1];
+			siteName = args[0];
+			message = args[1];
+		} catch (final Exception e) {
+			System.err
+			.println("Usage: \033[4msiteName\033[0m \033[4mmessage\033[0m [port] [host]");
+			return;
+		}
+
+		try {
+			host = args[3];
 		} catch (final Exception e) {
 			host = RMIConfiguration.INSTANCE.getProperty("registryHost");
 		}
 
 		try {
-			port = Integer.parseInt(args[2]);
+			port = Integer.parseInt(args[4]);
 		} catch (final Exception e) {
 			port = RMIConfiguration.INSTANCE.getIntProperty("registryPort");
 		}
@@ -42,41 +52,13 @@ public class SiteSendMessage {
 			throw new RuntimeException("Impossible de trouver le registry", e1);
 		}
 
-		System.out
-				.println("ex: send \033[4msiteName\033[0m \033[4mmessage\033[0m");
-
-		String line = "";
-		final Scanner s = new Scanner(System.in);
-		while ((line = s.nextLine()) != null) {
-			if (line.equals("help")) {
-				System.out
-				.println("Les commandes disponibles sont: help, send ");
-			} else if (line.startsWith("send")) {
-				final String[] splittedLine = line.split(" ");
-				final String siteName = splittedLine[1];
-				try {
-					final Site site = (Site) registry.lookup(siteName);
-					sendMessage(site,
-							line.replaceAll("send " + siteName + " ", ""));
-				} catch (final Exception e) {
-					System.out.println("Site " + siteName + " non trouvé");
-				}
-			} else if (line.startsWith("list")) {
-				try {
-					if (registry.list().length == 0) {
-						System.out.println("Annuaire vide");
-					}
-					for (final String string : registry.list()) {
-						System.out.println(string);
-					}
-				} catch (final Exception e) {
-					throw new RuntimeException(
-							"Impossible d'accéder à la liste", e);
-				}
-			} else {
-				System.out.println("Commande: " + line + " non trouvée.");
-			}
+		try {
+			final Site site = (Site) registry.lookup(siteName);
+			sendMessage(site, message);
+		} catch (final Exception e) {
+			System.err.println("Site " + siteName + " non trouvé");
 		}
+
 
 	}
 

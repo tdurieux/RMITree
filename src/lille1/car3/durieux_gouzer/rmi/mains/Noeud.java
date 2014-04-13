@@ -1,5 +1,6 @@
 package lille1.car3.durieux_gouzer.rmi.mains;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -45,19 +46,26 @@ public class Noeud {
 			siteName = args[0];
 		} catch (final Exception e) {
 			try {
-				siteName = "Site" + registry.list().length;
+				siteName = registry.list().length + "";
 			} catch (final Exception e1) {
-				siteName = "Site0";
+				siteName = "0";
 			}
 		}
-
+		try {
+			registry.lookup(siteName);
+			System.out.println("[" + siteName + "] already exists");
+			return;
+		} catch (final NotBoundException e) {
+			// the site doesn't already exist
+		} catch (final RemoteException e) {
+			throw new RuntimeException("Unable to connect to RMI server", e);
+		}
 		try {
 			site = new SiteImpl(siteName);
-
 			registry.rebind(site.getName(), site);
 			System.out.println("Site " + site.getName() + " créé.");
 		} catch (final RemoteException e) {
-			throw new RuntimeException("Impossible de créer un nouveau site", e);
+			throw new RuntimeException("Unable to connect to RMI server", e);
 		}
 
 		// tue proprement le noeud

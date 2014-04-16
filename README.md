@@ -7,6 +7,7 @@ Thomas Durieux & William Gouzer
 
 29 mars 2014
 
+
 # Introduction
 
 Ce projet est implémenté en Java et utilise son API Remote Method Invocation (Java RMI) pour
@@ -17,8 +18,9 @@ les fonctionnalités du programme ont été divisés en trois parties :
   * connectSite permet de connecter les sites entre eux
   * sendMessage pour envoyer un message à destination d'un site
 
-L'utilisation et les tests de ces programmes se trouvent à la fin de
+Le guide d'utilisation des programmes et des scripts de tests de ces programmes se trouvent à la fin de
 ce README
+
 
 # Exceptions
 

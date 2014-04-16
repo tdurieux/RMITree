@@ -114,6 +114,7 @@ echo
 echo -e $GRN"Cleaning up and leaving..."
 echo -e "==========================="$WHT
 
+rm -f out.txt
 
 # kill everything related to java when leaving
 killJava

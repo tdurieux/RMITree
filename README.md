@@ -89,35 +89,113 @@ le registry mais que la connexion n'est pas ou plus active :
 ```
 
 
-
 # Exemples de code
 
+## Connecter deux sites à partir de leur nom
+Fichier lille1.car3.durieux_gouzer.rmi.mains.ConnectSite Méthode: main
+```Java
+// récupère les deux site stockés dans le registres
+Site site1 = (Site) registry.lookup(siteName1);
+Site site2 = (Site) registry.lookup(siteName2);
+
+// ajoute le site2 comme fils du site1
+site1.addConnection(site2);
+
+```
+
+## envoyer un message à partir d'un site
+Fichier lille1.car3.durieux_gouzer.rmi.mains.SendMessage Méthode: sendMessage
+```Java
+// construit un objet message et l'envoie
+Message m = new MessageImpl(message, sender);
+sender.transferMessage(m);
+```
+
+## ajouter un site à l'annuaire
+Fichier lille1.car3.durieux_gouzer.rmi.mains.Noeud Méthode: main
+```Java
+Site site = new SiteImpl(siteName);
+// connect le site au registre avec comme clé, le nom du site.
+registry.rebind(site.getName(), site);
+```
+
+## empêcher l'envoie de message dupliqué
+Fichier lille1.car3.durieux_gouzer.rmi.SiteImpl Méthode: transferMessage
+```Java
+// la section critique permet d'assurer qu'aucune interruption aura lieux entre la vérification et de l'ajout dans la liste.
+synchronized (this.receivedMessages) {
+		if (this.receivedMessages.contains(message)) {
+			// le message a déjà été transféré
+			return;
+		}
+		this.receivedMessages.add(message);
+}
+```
+
+## envoyer les messages aux fils
+Fichier lille1.car3.durieux_gouzer.rmi.SiteImpl Méthode: transferMessage
+```Java
+for (final Site connection : SiteImpl.this.connections) {
+	// ne pas envoyer le message à l'émetteur
+	if (connection.equals(message.getSender())) {
+		continue;
+	}
+	// créer un nouveau thread permettant l'envoie concurrent
+	new Thread(new Runnable() {
+		final Site c = connection;
+		@Override
+		public void run() {
+			// envoyer le message au fils
+			this.c.transferMessage(message);
+		}
+	}).run();
+}
+```
 
 # Exécuter le projet
 
 1. Lancer annuaire.jar
+L'annuaire permet de créer un serveur RMI, si il n'est pas encore lancé sur un port donnée.
+L'annuaire permet également de connecter deux sites entre eux avec la syntaxe suivante: ```connect siteName1->siteName2```.
 
 ```bash
     java -jar annuaire.jar [registryHost registryPort]
 ```
 
 1. Lancer les différents noeuds
+L'exécutable noeud.jar permet d'ajouter un nouveau noeud au registre,
 
 ```bash
-    java -jar noeuds.jar nomNoeud [registryHost registryPort]
+    java -jar noeud.jar siteName [registryHost registryPort]
 ```
 
 1. Lancer l'envoyeur de message
-
+L'exécutable sendMessage permet d'envoyer un message à partir d'un site donné.
 ```bash
-    java -jar sendMessage.jar nomNoeud message [registryHost registryPort]
+    java -jar sendMessage.jar siteName message [registryHost registryPort]
 ```
 
-1. Lier les différents noeuds
+# Scripts démo
 
-Aller dans le terminal ayant lancé annuaire.jar.
-entrer la commande:
+1. RMIBasedTreeCreation.sh
+Ce script montre la création et la connexion de plusieurs site entre eux.
 
-``` bash
-connect nomNoeudParent->nomNoeudFils
-```
+1. MessageTransferFromRoot.sh
+Ce script montre l'envoie de message à partir de l'élément root de l'arbre.
+
+1. MessageTransferFromNode.sh
+Ce script montre l'envoie de message à partir d'un élément quelconque de l'arbre.
+
+1. ConcurentMessageTransfer.sh
+Ce script montre l'envoie de messages concurrents.
+
+1. GraphMessageTransfer.sh
+Ce script montre le comportement de l'implémentation dans un environnement de graphe (un site peut posséder plusieurs parents).
+
+# Scripts de tests
+
+1. testConnectAndSendMessage.sh
+Ce script test la connexion et l'envoie de message simple.
+
+1. testConcurentMessageTransfer.sh
+Ce script test la bonne réception de message envoyé de façon concurrente.

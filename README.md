@@ -18,7 +18,7 @@ les fonctionnalités du programme ont été divisés en trois parties :
   * connectSite permet de connecter les sites entre eux
   * sendMessage pour envoyer un message à destination d'un site
 
-Le guide d'utilisation des programmes et des scripts de tests de ces programmes se trouvent à la fin de
+Le guide d'utilisation et des scripts de tests de ces programmes se trouvent à la fin de
 ce README
 
 

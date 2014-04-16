@@ -5,7 +5,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * est un noeud de l'arbre de communication
+ * is a RMI object that represent a node and allows node to communicate with its
+ * childrens.
  * 
  * @author Thomas Durieux
  * 

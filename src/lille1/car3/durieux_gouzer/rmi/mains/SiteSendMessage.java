@@ -10,8 +10,8 @@ import lille1.car3.durieux_gouzer.rmi.MessageImpl;
 import lille1.car3.durieux_gouzer.rmi.Site;
 
 /**
- * est une classe exécutable qui permet de lancer des messages sur les
- * différents sites
+ * is an executable class used to allow user to send message from a specific
+ * site. The main has parameters: siteName message [rmiHost rmiPort].
  * 
  * @author Thomas Durieux
  * 
@@ -58,7 +58,6 @@ public class SiteSendMessage {
 		} catch (final Exception e) {
 			System.err.println("Site " + siteName + " non trouvé");
 		}
-
 
 	}
 

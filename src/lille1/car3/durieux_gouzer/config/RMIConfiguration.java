@@ -1,8 +1,8 @@
 package lille1.car3.durieux_gouzer.config;
 
 /**
- * est le singloton permettant d'accéder aux configurations du projet
- * (registryPort et registryHost)
+ * is a singleton used to access RMI configuration (registry port and registry
+ * host)
  * 
  * @author Durieux Thomas
  */

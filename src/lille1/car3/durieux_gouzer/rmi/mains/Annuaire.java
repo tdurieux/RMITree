@@ -12,7 +12,8 @@ import lille1.car3.durieux_gouzer.config.RMIConfiguration;
 import lille1.car3.durieux_gouzer.rmi.Site;
 
 /**
- * est la classe exécutable permettant de lancer l'annuaire de RMI
+ * is an executable class used to create or not the RMI server and connect
+ * sites. The main has parameters: [RMIPort]
  * 
  * @author Thomas Durieux
  * 
@@ -22,7 +23,7 @@ public class Annuaire {
 		int port;
 		Registry registry;
 		try {
-			port = Integer.parseInt(args[2]);
+			port = Integer.parseInt(args[0]);
 		} catch (final Exception e) {
 			// utiliser le port par défaut
 			port = RMIConfiguration.INSTANCE.getIntProperty("registryPort");

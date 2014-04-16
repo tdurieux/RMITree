@@ -10,7 +10,8 @@ import lille1.car3.durieux_gouzer.rmi.Site;
 import lille1.car3.durieux_gouzer.rmi.SiteImpl;
 
 /**
- * est une classe exécutatble permettant de créer un nouveau site
+ * is executable class used to create new site. The main has parameters:
+ * siteName [RMIHost RMIPort].
  * 
  * @author Thomas Durieux
  * 

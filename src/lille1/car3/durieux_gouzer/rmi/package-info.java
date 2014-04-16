@@ -1,5 +1,5 @@
 /**
- * est le package qui contient les différentes classes métiers.
+ * is the main package of the project, It contains Site and messages descriptors.
  * 
  * @author Thomas Durieux
  *

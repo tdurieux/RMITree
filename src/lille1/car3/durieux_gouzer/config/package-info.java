@@ -1,5 +1,5 @@
 /**
- * est le package qui contient les fichiers de configuration ainsi que les classes utilitaires qui permet de les lire
+ * is a package used to store config files and config utility classes
  * 
  * @author Thomas Durieux
  *

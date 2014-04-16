@@ -10,7 +10,8 @@ import lille1.car3.durieux_gouzer.config.RMIConfiguration;
 import lille1.car3.durieux_gouzer.rmi.Site;
 
 /**
- * est la classe exécutable permettant de lancer l'annuaire de RMI
+ * is an executable class used to connect 2 sites. The main has parameters:
+ * "siteName1->siteName2" [rmiPort].
  * 
  * @author Thomas Durieux
  * 
@@ -24,9 +25,8 @@ public class ConnectSite {
 		try {
 			connectCommand = args[0];
 		} catch (final Exception e) {
-			// utiliser le port par défaut
 			System.err
-					.println("Usage: \033[4msiteName1\033[0m->\033[4msiteName2\033[0m [port]");
+			.println("Usage: \033[4msiteName1\033[0m->\033[4msiteName2\033[0m [port]");
 			return;
 		}
 

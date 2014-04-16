@@ -3,7 +3,7 @@ package lille1.car3.durieux_gouzer.rmi;
 import java.io.Serializable;
 
 /**
- * est un message qui est à commiquer entre les différents sites
+ * @see lille1.car3.durieux_gouzer.rmi.Message
  * 
  * @author Thomas Durieux
  * 

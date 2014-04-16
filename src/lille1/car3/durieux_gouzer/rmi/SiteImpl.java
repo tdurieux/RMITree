@@ -6,6 +6,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * is a RMI object that represent a node and allows node to communicate with its
+ * childrens.
+ * 
+ * @author Thomas Durieux
+ * 
+ */
 public class SiteImpl extends UnicastRemoteObject implements Site, Serializable {
 
 	private static final long serialVersionUID = -4318509254473189526L;
@@ -20,11 +27,17 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 		this.receivedMessages = new ArrayList<Message>();
 	}
 
+	/**
+	 * @see Site
+	 */
 	@Override
 	public String getName() throws RemoteException {
 		return this.name;
 	}
 
+	/**
+	 * @see Site
+	 */
 	@Override
 	public void addConnection(final Site connection) throws RemoteException {
 		if (!this.connections.contains(connection)) {
@@ -34,6 +47,9 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 		}
 	}
 
+	/**
+	 * @see Site
+	 */
 	@Override
 	public synchronized void transferMessage(final Message message)
 			throws RemoteException {
@@ -76,6 +92,9 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 
 	}
 
+	/**
+	 * @see Site
+	 */
 	@Override
 	public List<Message> getReceivedMessages() throws RemoteException {
 		return this.receivedMessages;

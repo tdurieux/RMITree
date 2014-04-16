@@ -1,5 +1,5 @@
 /**
- * est le package qui contient les différentes classes exécutables (l'annuaire, les noeuds et la classe qui envoie les messages)
+ * contains executable classes used to manipulate site RMI object
  * 
  * @author Thomas Durieux
  *

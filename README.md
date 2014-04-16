@@ -30,62 +30,62 @@ Les exceptions prises en compte par ce programme sont les suivantes :
    programmes (un Main par programme) :
 
 ```java
- 		try {
-			host = args[1];
-		} catch (final Exception e) {
-			host = RMIConfiguration.INSTANCE.getProperty("registryHost");
-		}
+try {
+	host = args[1];
+} catch (final Exception e) {
+	host = RMIConfiguration.INSTANCE.getProperty("registryHost");
+}
 ```
 
 * **RemoteException**, lancée lorsqu'une tentative d'accès au registry
   échoue :
 
 ```java
-		try {
-			registry = LocateRegistry.getRegistry(host, port);
-		} catch (final RemoteException e1) {
-			throw new RuntimeException("Impossible de trouver le registry", e1);
-		}
+try {
+	registry = LocateRegistry.getRegistry(host, port);
+} catch (final RemoteException e1) {
+	throw new RuntimeException("Impossible de trouver le registry", e1);
+}
 ```
 
 * **InterruptedException**, lancée lorsque l'on termine le thread avant sa fin
  d'exécution "naturelle". Le thread est ici utilisé pour éviter une
  boucle while(true) bloquante :
 ```java
-		@Override
-		public void run() {
-			try {
-				Thread.currentThread().sleep(99999999);
-			} catch (final InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
+@Override
+public void run() {
+	try {
+		Thread.currentThread().sleep(99999999);
+	} catch (final InterruptedException e) {
+		throw new RuntimeException(e);
+	}
+}
 ```
 
 * **IOException**, lancée lorsque l'on tente d'accéder à un fichier
 (ici de configuration) sur le disque et que la lecture échoue :
 ```java
-		try {
-			this.properties.load(openStream);
-		} catch (final IOException e) {
-			throw new RuntimeException(
-					"Impossible de charger les fichiers de configurations", e);
-		}
+try {
+	this.properties.load(openStream);
+} catch (final IOException e) {
+	throw new RuntimeException(
+			"Impossible de charger les fichiers de configurations", e);
+}
 
 ```
 
 * **NotBoundException**, lancée lorsque l'on tente de communiquer avec
 le registry mais que la connexion n'est pas ou plus active :
 ```java
-		try {
-			registry.lookup(siteName);
-			System.out.println("[" + siteName + "] already exists");
-			return;
-		} catch (final NotBoundException e) {
-			// the site doesn't already exist
-		} catch (final RemoteException e) {
-			throw new RuntimeException("Unable to connect to RMI server", e);
-		}
+try {
+	registry.lookup(siteName);
+	System.out.println("[" + siteName + "] already exists");
+	return;
+} catch (final NotBoundException e) {
+	// the site doesn't already exist
+} catch (final RemoteException e) {
+	throw new RuntimeException("Unable to connect to RMI server", e);
+}
 ```
 
 
@@ -122,7 +122,9 @@ registry.rebind(site.getName(), site);
 ## empêcher l'envoie de message dupliqué
 Fichier lille1.car3.durieux_gouzer.rmi.SiteImpl Méthode: transferMessage
 ```Java
-// la section critique permet d'assurer qu'aucune interruption aura lieux entre la vérification et de l'ajout dans la liste.
+// la section critique permet d'assurer
+// qu'aucune interruption aura lieux
+// entre la vérification et de l'ajout dans la liste.
 synchronized (this.receivedMessages) {
 		if (this.receivedMessages.contains(message)) {
 			// le message a déjà été transféré
@@ -154,7 +156,7 @@ for (final Site connection : SiteImpl.this.connections) {
 
 # Exécuter le projet
 
-1. Lancer annuaire.jar
+### Lancer annuaire.jar
 L'annuaire permet de créer un serveur RMI, si il n'est pas encore lancé sur un port donnée.
 L'annuaire permet également de connecter deux sites entre eux avec la syntaxe suivante: ```connect siteName1->siteName2```.
 
@@ -162,14 +164,14 @@ L'annuaire permet également de connecter deux sites entre eux avec la syntaxe s
     java -jar annuaire.jar [registryHost registryPort]
 ```
 
-1. Lancer les différents noeuds
+### Lancer les différents noeuds
 L'exécutable noeud.jar permet d'ajouter un nouveau noeud au registre,
 
 ```bash
     java -jar noeud.jar siteName [registryHost registryPort]
 ```
 
-1. Lancer l'envoyeur de message
+### Lancer l'envoyeur de message
 L'exécutable sendMessage permet d'envoyer un message à partir d'un site donné.
 ```bash
     java -jar sendMessage.jar siteName message [registryHost registryPort]
@@ -177,25 +179,25 @@ L'exécutable sendMessage permet d'envoyer un message à partir d'un site donné
 
 # Scripts démo
 
-1. RMIBasedTreeCreation.sh
+### RMIBasedTreeCreation.sh
 Ce script montre la création et la connexion de plusieurs site entre eux.
 
-1. MessageTransferFromRoot.sh
+### MessageTransferFromRoot.sh
 Ce script montre l'envoie de message à partir de l'élément root de l'arbre.
 
-1. MessageTransferFromNode.sh
+### MessageTransferFromNode.sh
 Ce script montre l'envoie de message à partir d'un élément quelconque de l'arbre.
 
-1. ConcurentMessageTransfer.sh
+### ConcurentMessageTransfer.sh
 Ce script montre l'envoie de messages concurrents.
 
-1. GraphMessageTransfer.sh
+### GraphMessageTransfer.sh
 Ce script montre le comportement de l'implémentation dans un environnement de graphe (un site peut posséder plusieurs parents).
 
 # Scripts de tests
 
-1. testConnectAndSendMessage.sh
+### testConnectAndSendMessage.sh
 Ce script test la connexion et l'envoie de message simple.
 
-1. testConcurentMessageTransfer.sh
+### testConcurentMessageTransfer.sh
 Ce script test la bonne réception de message envoyé de façon concurrente.

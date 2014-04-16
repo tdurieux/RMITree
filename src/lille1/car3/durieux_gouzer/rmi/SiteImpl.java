@@ -53,17 +53,16 @@ public class SiteImpl extends UnicastRemoteObject implements Site, Serializable 
 	@Override
 	public void transferMessage(final Message message) throws RemoteException {
 
-		// le message a déjà été transféré
-		if (this.receivedMessages.contains(message)) {
-			return;
+		synchronized (this.receivedMessages) {
+			if (this.receivedMessages.contains(message)) {
+				// le message a déjà été transféré
+				return;
+			}
+			this.receivedMessages.add(message);
 		}
-		this.receivedMessages.add(message);
 
-		if (!message.getSender().getName().equals(this.name)) {
-			System.out.println("[" + this.name + "] \"" + message.getContent()
-					+ "\" receives message from "
-					+ message.getSender().getName());
-		}
+		System.out.println("[" + this.name + "] \"" + message.getContent()
+				+ "\" receives message from " + message.getSender().getName());
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

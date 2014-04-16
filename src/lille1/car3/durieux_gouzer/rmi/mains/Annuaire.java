@@ -35,7 +35,8 @@ public class Annuaire {
 			try {
 				registry = LocateRegistry.getRegistry(port);
 			} catch (final RemoteException e1) {
-				throw new RuntimeException("Impossible de démarrer l'annuaire",
+				throw new RuntimeException(
+						"Impossible de récupérer l'annuaire",
 						e);
 			}
 		} catch (final RemoteException e) {

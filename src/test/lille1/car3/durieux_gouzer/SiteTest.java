@@ -2,49 +2,16 @@ package test.lille1.car3.durieux_gouzer;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-
-import javax.management.remote.JMXConnectorServer;
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
 
 import lille1.car3.durieux_gouzer.rmi.Message;
 import lille1.car3.durieux_gouzer.rmi.MessageImpl;
 import lille1.car3.durieux_gouzer.rmi.Site;
 import lille1.car3.durieux_gouzer.rmi.SiteImpl;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SiteTest {
-	Registry registry;
-	int port = 56765;
-
-	@Before
-	public void beforeTest() throws RemoteException {
-		this.registry = LocateRegistry.createRegistry(this.port);
-	}
-
-	@After
-	public void afterTest() throws IOException {
-		JMXServiceURL url = null;
-		final String urlString = "service:jmx:rmi://localhost:"
-				+ (this.port + 1) + "/jndi/rmi://:" + this.port + "/jmxrmi";
-		url = new JMXServiceURL(urlString);
-
-		final JMXConnectorServer connector = JMXConnectorServerFactory
-				.newJMXConnectorServer(url, new HashMap<String, Object>(),
-						ManagementFactory.getPlatformMBeanServer());
-		connector.stop();
-		UnicastRemoteObject.unexportObject(this.registry, true);
-	}
 
 	@Test
 	public void sendMessageToHimSelf() throws RemoteException {

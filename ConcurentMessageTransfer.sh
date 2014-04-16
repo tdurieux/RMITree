@@ -38,28 +38,36 @@ function startRmi {
     sleep 1
 }
 
-function startMessage {
-    echo -e "$GRN Starting message app in another terminal... $WHT"
-    $TERMINAL -e "java -jar $JAR_PATH/sendMessage.jar 1 testMessage" . &
-    sleep 0.3
-}
-
 function startNode {
     echo -e "$GRN Creating sites (nodes)... $WHT"
-    for i in {1..6}
+    for i in {1..20}
     do
         java -jar $JAR_PATH/noeud.jar $i &
+        sleep 0.2
     done
-    sleep 0.3
 }
 
 function createConnections {
     echo -e "$GRN Starting registry and create connections between sites... $WHT"
     java -jar $JAR_PATH/connectSite.jar "1->2"
-    java -jar $JAR_PATH/connectSite.jar "1->5"
-    java -jar $JAR_PATH/connectSite.jar "5->6"
     java -jar $JAR_PATH/connectSite.jar "2->3"
-    java -jar $JAR_PATH/connectSite.jar "2->4"
+    java -jar $JAR_PATH/connectSite.jar "3->4"
+    java -jar $JAR_PATH/connectSite.jar "4->5"
+    java -jar $JAR_PATH/connectSite.jar "5->6"
+    java -jar $JAR_PATH/connectSite.jar "6->7"
+    java -jar $JAR_PATH/connectSite.jar "7->8"
+    java -jar $JAR_PATH/connectSite.jar "8->9"
+    java -jar $JAR_PATH/connectSite.jar "9->10"
+    java -jar $JAR_PATH/connectSite.jar "1->11"
+    java -jar $JAR_PATH/connectSite.jar "11->12"
+    java -jar $JAR_PATH/connectSite.jar "12->13"
+    java -jar $JAR_PATH/connectSite.jar "13->14"
+    java -jar $JAR_PATH/connectSite.jar "14->15"
+    java -jar $JAR_PATH/connectSite.jar "15->16"
+    java -jar $JAR_PATH/connectSite.jar "16->17"
+    java -jar $JAR_PATH/connectSite.jar "17->18"
+    java -jar $JAR_PATH/connectSite.jar "18->19"
+    java -jar $JAR_PATH/connectSite.jar "19->20"
     sleep 0.3
 }
 
@@ -79,8 +87,12 @@ startNode
 # Connects the nodes
 createConnections
 
-# start the message jar in another terminal
-startMessage
+# Send a message to root
+echo -e "$GRN Send message from root... $WHT"
+java -jar $JAR_PATH/sendMessage.jar 1 testMessage1 &
+echo -e "$GRN Send message from root... $WHT"
+java -jar $JAR_PATH/sendMessage.jar 1 testMessage2 &
+echo -e "$GRN Send new message with the program jar/sendMessage.jar nodeName message $WHT"
 
 echo -e "$RED Type quit to leave the program... $WHT"
 java -jar $JAR_PATH/annuaire.jar

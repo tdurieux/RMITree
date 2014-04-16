@@ -38,12 +38,6 @@ function startRmi {
     sleep 1
 }
 
-function startMessage {
-    echo -e "$GRN Starting message app in another terminal... $WHT"
-    $TERMINAL -e "java -jar $JAR_PATH/sendMessage.jar 1 testMessage" . &
-    sleep 0.3
-}
-
 function startNode {
     echo -e "$GRN Creating sites (nodes)... $WHT"
     for i in {1..6}
@@ -60,6 +54,7 @@ function createConnections {
     java -jar $JAR_PATH/connectSite.jar "5->6"
     java -jar $JAR_PATH/connectSite.jar "2->3"
     java -jar $JAR_PATH/connectSite.jar "2->4"
+    java -jar $JAR_PATH/connectSite.jar "4->6"
     sleep 0.3
 }
 
@@ -79,8 +74,10 @@ startNode
 # Connects the nodes
 createConnections
 
-# start the message jar in another terminal
-startMessage
+# Send a message to root
+echo -e "$GRN Send message from root... $WHT"
+java -jar $JAR_PATH/sendMessage.jar 1 testMessage
+echo -e "$GRN Send new message with the program jar/sendMessage.jar nodeName message $WHT"
 
 echo -e "$RED Type quit to leave the program... $WHT"
 java -jar $JAR_PATH/annuaire.jar

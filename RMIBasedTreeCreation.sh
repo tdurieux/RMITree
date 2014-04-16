@@ -38,12 +38,6 @@ function startRmi {
     sleep 1
 }
 
-function startMessage {
-    echo -e "$GRN Starting message app in another terminal... $WHT"
-    $TERMINAL -e "java -jar $JAR_PATH/sendMessage.jar 1 testMessage" . &
-    sleep 0.3
-}
-
 function startNode {
     echo -e "$GRN Creating sites (nodes)... $WHT"
     for i in {1..6}
@@ -53,13 +47,15 @@ function startNode {
     sleep 0.3
 }
 
-function createConnections {
+function startConnection {
     echo -e "$GRN Starting registry and create connections between sites... $WHT"
+    echo -e "$RED Type quit to leave the program... $WHT"
     java -jar $JAR_PATH/connectSite.jar "1->2"
     java -jar $JAR_PATH/connectSite.jar "1->5"
     java -jar $JAR_PATH/connectSite.jar "5->6"
     java -jar $JAR_PATH/connectSite.jar "2->3"
     java -jar $JAR_PATH/connectSite.jar "2->4"
+    java -jar $JAR_PATH/annuaire.jar
     sleep 0.3
 }
 
@@ -76,14 +72,8 @@ startRmi
 # Spawn a fixed number of nodes
 startNode
 
-# Connects the nodes
-createConnections
-
-# start the message jar in another terminal
-startMessage
-
-echo -e "$RED Type quit to leave the program... $WHT"
-java -jar $JAR_PATH/annuaire.jar
+# Launch registy and connects the nodes
+startConnection
 
 # kill everything related to java when leaving
 killJava

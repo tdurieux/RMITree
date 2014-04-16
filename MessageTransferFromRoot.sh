@@ -38,12 +38,6 @@ function startRmi {
     sleep 1
 }
 
-function startMessage {
-    echo -e "$GRN Starting message app in another terminal... $WHT"
-    $TERMINAL -e "java -jar $JAR_PATH/sendMessage.jar 1 testMessage" . &
-    sleep 0.3
-}
-
 function startNode {
     echo -e "$GRN Creating sites (nodes)... $WHT"
     for i in {1..6}
@@ -79,11 +73,15 @@ startNode
 # Connects the nodes
 createConnections
 
-# start the message jar in another terminal
-startMessage
-
-echo -e "$RED Type quit to leave the program... $WHT"
-java -jar $JAR_PATH/annuaire.jar
+# Send a message to root
+echo -e "$GRN Send message from root... $WHT"
+java -jar $JAR_PATH/sendMessage.jar 1 testMessage
 
 # kill everything related to java when leaving
 killJava
+
+
+# Miscs for resume background task
+# pid=$!
+# jobs $pid
+# fg %1

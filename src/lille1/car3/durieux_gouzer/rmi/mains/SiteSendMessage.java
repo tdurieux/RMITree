@@ -66,7 +66,7 @@ public class SiteSendMessage {
 		try {
 			site.transferMessage(m);
 		} catch (final Exception e) {
-			throw new RuntimeException("Impossible d'envoyer un message");
+			throw new RuntimeException("Impossible d'envoyer le message");
 		}
 	}
 }

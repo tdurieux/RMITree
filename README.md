@@ -7,6 +7,14 @@ Thomas Durieux & William Gouzer
 
 29 mars 2014
 
+# Introduction
+
+Ce projet a été réalisé dans le cadre du cours de "Construction
+d'Applications Réparties" de l'université Lille 1. Il est implémenté
+en Java et utilise son API Remote Method Invocation (Java RMI) pour
+communiquer entre plusieurs site de manière distribuée et asynchrone.
+
+
 # Exceptions
 
 Les exceptions prises en compte par ce programme sont les suivantes :

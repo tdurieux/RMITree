@@ -10,6 +10,9 @@ PWD=`pwd`
 CLASS_PATH="$PWD/jar/annuaire.jar:lille1/car3/durieux_gouzer/rmi"
 REGISTRY_PATH="/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.60-2.4.5.1.fc20.x86_64/jre/bin/rmiregistry 58432"
 
+# mac path
+REGISTRY_PATH="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/bin/rmiregistry 58432"
+
 # start the rmi registry
 export CLASSPATH=$CLASS_PATH
 $REGISTRY_PATH &

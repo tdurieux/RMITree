@@ -9,11 +9,16 @@ Thomas Durieux & William Gouzer
 
 # Introduction
 
-Ce projet a été réalisé dans le cadre du cours de "Construction
-d'Applications Réparties" de l'université Lille 1. Il est implémenté
-en Java et utilise son API Remote Method Invocation (Java RMI) pour
-communiquer entre plusieurs site de manière distribuée et asynchrone.
+Ce projet est implémenté en Java et utilise son API Remote Method Invocation (Java RMI) pour
+communiquer entre plusieurs sites de manière distribuée et
+asynchrone. Pour permettre le lancement sur plusieurs machines virtuelles,
+les fonctionnalités du programme ont été divisés en trois parties :
+  * noeud représente les différents sites à créer
+  * connectSite permet de connecter les sites entre eux
+  * sendMessage pour envoyer un message à destination d'un site
 
+L'utilisation et les tests de ces programmes se trouvent à la fin de
+ce README
 
 # Exceptions
 
@@ -90,20 +95,20 @@ le registry mais que la connexion n'est pas ou plus active :
 
 1. Lancer annuaire.jar
 
-``` bash
-java -jar annuaire.jar [registryHost registryPort] 
+```bash
+    java -jar annuaire.jar [registryHost registryPort]
 ```
 
 1. Lancer les différents noeuds
 
-``` bash
-java -jar noeuds.jar nomNoeud [registryHost registryPort] 
+```bash
+    java -jar noeuds.jar nomNoeud [registryHost registryPort]
 ```
 
 1. Lancer l'envoyeur de message
 
-``` bash
-java -jar sendMessage.jar nomNoeud message [registryHost registryPort] 
+```bash
+    java -jar sendMessage.jar nomNoeud message [registryHost registryPort]
 ```
 
 1. Lier les différents noeuds

@@ -60,7 +60,6 @@ function createConnections {
     java -jar $JAR_PATH/connectSite.jar "5->6"
     java -jar $JAR_PATH/connectSite.jar "2->3"
     java -jar $JAR_PATH/connectSite.jar "2->4"
-    java -jar $JAR_PATH/connectSite.jar "4->5"
     sleep 0.3
 }
 

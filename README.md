@@ -196,7 +196,10 @@ Ce script montre le comportement de l'implémentation dans un environnement de g
 # Scripts de tests
 
 ### testConnectAndSendMessage.sh
-Ce script test la connexion et l'envoie de message simple.
+Ce script test la connexion et l'envoie de message simple sur arbre.
 
 ### testConcurentMessageTransfer.sh
-Ce script test la bonne réception de message envoyé de façon concurrente.
+Ce script test la bonne réception de message envoyé de façon concurrente sur un arbre.
+
+### testGraphConnectAndSendMessage.sh
+Ce script test la connexion et l'envoie de message sur un graphe.

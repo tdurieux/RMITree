@@ -71,7 +71,6 @@ try {
 	throw new RuntimeException(
 			"Impossible de charger les fichiers de configurations", e);
 }
-
 ```
 
 * **NotBoundException**, lancée lorsque l'on tente de communiquer avec

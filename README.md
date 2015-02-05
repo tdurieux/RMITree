@@ -3,7 +3,7 @@ TP 3 RMI
 
 # Auteurs
 
-Thomas Durieux & William Gouzer
+Thomas Durieux & william
 
 29 mars 2014
 
